@@ -6,58 +6,55 @@ const restaurantRoute = express.Router();
 // Restaurant model
 let Restaurant = require('../model/Restaurant');
 
-// const MIME_TYPE_MAP = {
-//   'image/png': 'png',
-//   'image/jpeg': 'jpg',
-//   'image/jpg': 'jpg'
-// };
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     const isValid = MIME_TYPE_MAP[file.mimetype];
-//     let error = new Error("Invalid mime type");
-//     if (isValid) {
-//       error = null;
-//     }
-//     cb(error, "./images"); 
-//   },
-//   filename: (req, file, cb) => {
-//     const name = file.originalname.toLowerCase().split(' ').join('-');
-//     const ext = MIME_TYPE_MAP[file.mimetype];
-//     cb(null, name + '-' + Date.now() + '.' + ext);
-//   }
-// }); 
+const MIME_TYPE_MAP = {
+  'image/png': 'png',
+  'image/jpeg': 'jpg',
+  'image/jpg': 'jpg'
+};
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const isValid = MIME_TYPE_MAP[file.mimetype];
+    let error = new Error("Invalid mime type");
+    if (isValid) {
+      error = null;
+    }
+    cb(error, "./images"); 
+  },
+  filename: (req, file, cb) => {
+    const name = file.originalname.toLowerCase().split(' ').join('-');
+    const ext = MIME_TYPE_MAP[file.mimetype];
+    cb(null, name + '-' + Date.now() + '.' + ext);
+  }
+}); 
 
-///multer({ storage: storage }).single("image_path"),
-   
+///
+  
 // POST Restaurant
-restaurantRoute.post('/add-restaurant',  (req, res, next) => {
-  // const url = req.protocol + '://' + req.get('host')
+restaurantRoute.post('/add-restaurant', multer({ storage: storage }).single("image_path"), (req, res, next) => {
+  const url = req.protocol + '://' + req.get('host')
   const restaurant = new Restaurant({
     //_id: new mongoose.Types.ObjectId(),
     name: req.body.name,
-    address:req.body.address,
-    contact:req.body.contact,
-    descripation:req.body.descripation,
-    features:req.body.features,
-    Establishment:req.body.Establishment,
+    image_path: url + '/images/' + req.file.filename,
+    restaurant_features:req.body.restaurant_features,
+    establishment_type:req.body.establishment_type,
     meals:req.body.meals,
-    Pricerange:req.body.Pricerange,
+    price_range:req.body.price_range, 
     cuisine:req.body.cuisine,
-dishes:req.body.dishes,
-DietaryRestrictions:req.body.DietaryRestrictions,
-goodFor:req.body.goodFor
-
-    // imageUrls: url + '/images/' + req.file.filename,
-  
+    dietary_restrictions:req.body.dietary_restrictions,
+    location:req.body.location,
+    phone:req.body.phone
 
   });
   restaurant.save().then(result => {
     console.log(result);
     res.status(201).json({
       message: "data saved successfully!",
+      restaurant: {
+        ...result,
         id: result._id
-      
-    })   
+      }
+    })
   })
 })
 //Add Restaurant

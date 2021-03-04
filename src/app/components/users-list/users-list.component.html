@@ -5,9 +5,6 @@
   </div>
   
   <p *ngIf="UserData.length <= 0" class="no-data">There is no user added yet!</p>
-  <div class="no-data" *ngIf="UserData.length <= 0" style="display: flex;justify-content: center;align-items: center;position: absolute;top: 300px;left: 800px;" >
-    <mat-spinner color="primary"></mat-spinner>
-  </div>
   
   <div class="container" *ngIf="UserData.length > 0">
 <!--   <form class="example-form">
@@ -27,10 +24,11 @@
   </mat-form-field>
 </form> -->
 
+
   <mat-form-field fxFlex="40%">
-    <input matInput type="text" (keyup)="doFilter($any($event.target).value)"  placeholder="Search">
+    <input matInput type="text" (keyup)="doFilter($any($event.target).value)"  placeholder="Filter">
   </mat-form-field>
-  
+
     <div class="mat-elevation-z8">
       <table mat-table [dataSource]="dataSource" matSort>
         <ng-container matColumnDef="FirstName">

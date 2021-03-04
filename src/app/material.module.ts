@@ -20,9 +20,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatAutocompleteModule} from '@angular/material/autocomplete';
 import { MatSortModule } from '@angular/material/sort';
 import {MatCheckboxModule} from '@angular/material/checkbox';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-
 
 
 @NgModule({
@@ -47,9 +44,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
       MatPaginatorModule,
       MatAutocompleteModule,
       MatSortModule,
-      MatCheckboxModule,
-      MatMenuModule,
-      MatProgressSpinnerModule
+      MatCheckboxModule
 
    ],
    exports: [
@@ -71,9 +66,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
       MatPaginatorModule,
       MatAutocompleteModule,
       MatSortModule,
-      MatCheckboxModule,
-      MatMenuModule,
-      MatProgressSpinnerModule
+      MatCheckboxModule
       
    ],
    providers: [

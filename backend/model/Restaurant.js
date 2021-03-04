@@ -6,54 +6,41 @@ let Restaurant = new Schema({
     name:{
     type: String
   },
-  imageUrls: {
-    type:Array
+  image_path: {
+    type:String
   },
-  address: {
-    type: Object
-  },
-  contact: {
-    type: Object
-  },
-  descripation: {
-    type: Object
-  }, 
-Establishment: {
+  restaurant_features: {
     type: Array
   },
-  features: {
+  establishment_type: {
     type: Array
   },
   meals: {
     type: Array
   },
-  Pricerange:{
-      type:mongoose.Schema.Types.ObjectId
+  price_range: {
+    type: String
   },
-  cuisine:{
-    type:Array
+  cuisine: {
+    type: Array
+  },
+  dietary_restrictions: {
+    type: Array
+  },
+  location:{
+      type:String
+  },
+  phone:{
+    type:Number
 },
-dishes:{
-  type:Array
-},
-DietaryRestrictions:{
-  type:Array
-},
-goodFor:{
-  type:Array
-},
-reviews:{
-  type:Array
-},
-rating:{
-  type:Array
-},
-likes:{
-  type:Array
-}
-
+// reviews:{
+//     type:Array
+// },
+// stars:{
+//     type:Number
+// }
 }, {
-  collection: 'Resturant'
+  collection: 'restaurants'
 })
 
 module.exports = mongoose.model('Restaurant', Restaurant)

@@ -13,17 +13,21 @@ import { Router } from "@angular/router";
 export class Api2Service {
   private hotels: Hotel[] = [];
   private hotelsUpdated = new Subject<Hotel[]>();
-  endpoint: string = 'http://localhost:8000/api/hotel';
+  endpoint: string = 'http://localhost:8008/api';
+  endpointCategory: string = 'http://localhost:8010/api';
   headers = new HttpHeaders().set('Content-Type', 'application/json');
-  constructor(private http: HttpClient,private router: Router) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
-   // Add hotel
+  // Add hotel
 
-   AddHotel(name:string,style:Array<string>,deals:Array<string>,amenities:Array<string>,rooms:number,
-    map:Object,classh:string,Pricedeals:Array<object>,popular:Array<string>,distance:Object,
-    languageSpoken:Array<string> ) {
-    const hotel: Hotel = {name:name ,style:style,deals:deals,amenities:amenities,rooms:rooms,
-    map:map,class:classh,Pricedeals:Pricedeals,popular:popular,distance:distance,langaugeSpoken:languageSpoken};
+  AddHotel(name: string, style: Array<string>, deals: Array<string>, amenities: Array<string>, rooms: number,
+    map: Object, classh: string, Pricedeals: Array<object>, popular: Array<string>,
+    languageSpoken: Array<string>) {
+    const hotel: Hotel = {
+      name: name, style: style, deals: deals, amenities: amenities, rooms: rooms,
+      map: map, class: classh, Pricedeals: Pricedeals, popular: popular, langaugeSpoken: languageSpoken,
+    };
+
     this.http
       .post<{ message: string; id: string }>(
         `${this.endpoint}/add-hotel`,
@@ -37,7 +41,7 @@ export class Api2Service {
         this.router.navigate(["/hotel-list"]);
       });
   }
-   
+
   //  AddHotel(name: string): Observable<any> {
   //   var formData: any = new FormData(); 
   //   formData.append("name", name);
@@ -53,18 +57,18 @@ export class Api2Service {
   //       catchError(this.errorMgmt)
   //     ) 
   // }
-   // Get all hotels
-  
+  // Get all hotels
+
   GetHotels() {
     return this.http.get(`${this.endpoint}`);
   }
-   // Get all hotel categories
- /*   GetHotelCategories() { 
-    return this.http.get(`${this.endpointCategory}`);
-  }
- */
-   // Get restaurant
-   GetHotel(id): Observable<any> {
+  // Get all hotel categories
+  /*   GetHotelCategories() { 
+     return this.http.get(`${this.endpointCategory}`);
+   }
+  */
+  // Get restaurant
+  GetHotel(id): Observable<any> {
     let API_URL = `${this.endpoint}/read-hotel/${id}`;
     return this.http.get(API_URL, { headers: this.headers })
       .pipe(
@@ -74,25 +78,25 @@ export class Api2Service {
         catchError(this.errorMgmt)
       )
   }
-    // Update hotel
-    UpdateHotel(id, data): Observable<any> {
-      let API_URL = `${this.endpoint}/update-hotel/${id}`;
-      return this.http.put(API_URL, data, { headers: this.headers })
-        .pipe(
-          catchError(this.errorMgmt)
-        )
-    }
-  
-     // Delete hotel
-     DeleteHotel(id): Observable<any> {
-      var API_URL = `${this.endpoint}/delete-hotel/${id}`;
-      return this.http.delete(API_URL)
-        .pipe(
-          catchError(this.errorMgmt)
-        )
-    }
-  
-     // Error handling 
+  // Update hotel
+  UpdateHotel(id, data): Observable<any> {
+    let API_URL = `${this.endpoint}/update-hotel/${id}`;
+    return this.http.put(API_URL, data, { headers: this.headers })
+      .pipe(
+        catchError(this.errorMgmt)
+      )
+  }
+
+  // Delete hotel
+  DeleteHotel(id): Observable<any> {
+    var API_URL = `${this.endpoint}/delete-hotel/${id}`;
+    return this.http.delete(API_URL)
+      .pipe(
+        catchError(this.errorMgmt)
+      )
+  }
+
+  // Error handling 
   errorMgmt(error: HttpErrorResponse) {
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
@@ -109,4 +113,3 @@ export class Api2Service {
 
 
 
-  

@@ -1,30 +1,25 @@
-﻿<div class="col-md-5 offset-md-4 mt-5">
+﻿<div class="col-md-6 offset-md-3 mt-5">
     <div class="alert alert-info">
         Username: admin<br />
         Password: admin
     </div>
     <div class="card">
-        <h4 class="card-header">Admin login <i class="material-icons">face</i></h4>
+        <h4 class="card-header">Admin login</h4>
         <div class="card-body">
             <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
                 <div class="form-group">
                     <label for="username">Username</label>
-                    <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" required />
+                    <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
                     <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
                         <div *ngIf="f.username.errors.required">Username is required</div>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="password">Password &nbsp;</label>
-                    <mat-card fxLayout="row wrap" >
-                    <mat-form-field class="example-full-width">
-                    <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
-<!--                     <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
- -->                    <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                    <label for="password">Password</label>
+                    <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+                    <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
                         <div *ngIf="f.password.errors.required">Password is required</div>
                     </div>
-                </mat-form-field>
-                </mat-card>
                 </div>
                 <button [disabled]="loading" class="btn btn-primary">
                     <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>

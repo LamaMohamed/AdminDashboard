@@ -4,6 +4,9 @@ import { ApiUserService } from './../../shared/api-user.service';
 import { MatPaginator} from '@angular/material/paginator';
 import {MatTableDataSource } from '@angular/material/table';
 import {DatePipe} from '@angular/common';
+import {FormControl} from '@angular/forms';
+import {Observable} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
 import { MatSort } from '@angular/material/sort';
 
 

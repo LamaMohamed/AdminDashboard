@@ -32,7 +32,6 @@ let Hotel = new Schema({
   },
   distance:{
     type: Object
-    
   },
   reviews: {
     type: Array

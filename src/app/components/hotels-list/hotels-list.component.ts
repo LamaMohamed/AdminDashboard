@@ -4,7 +4,6 @@ import { Api3Service } from './../../shared/api3.service';
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { MatPaginator} from '@angular/material/paginator'
 import {MatTableDataSource } from '@angular/material/table'
-import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-hotels-list',
@@ -14,9 +13,8 @@ import { MatSort } from '@angular/material/sort';
 export class HotelsListComponent implements OnInit {
     HotelData: any = [];
     dataSource: MatTableDataSource<Hotel>;
-    @ViewChild(MatSort,{ static: false }) sort: MatSort;
     @ViewChild(MatPaginator,{ static: false }) paginator: MatPaginator;
-    displayedColumns: string[] = ['name', 'style', 'rooms', 'action'];
+    displayedColumns: string[] = ['name', 'style','deals', 'rooms', 'amenities', 'action'];
 
   
     constructor(private hotelApi: Api2Service,
@@ -26,7 +24,6 @@ export class HotelsListComponent implements OnInit {
         this.dataSource = new MatTableDataSource<Hotel>(this.HotelData);
         setTimeout(() => {
           this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
         }, 0);
       })
      
@@ -37,7 +34,6 @@ export class HotelsListComponent implements OnInit {
     }
 
     DeleteHotel(index: number, e){
-      
       if(window.confirm('Are you sure')) {
         const data = this.dataSource.data;
         data.splice((this.paginator.pageIndex * this.paginator.pageSize) + index, 1);
@@ -45,10 +41,6 @@ export class HotelsListComponent implements OnInit {
         this.hotelApi.DeleteHotel(e._id).subscribe()
       }
     }
-
-    public doFilter = (value: string) => {
-    this.dataSource.filter = value.trim().toLocaleLowerCase();
-  }
   
   }
   

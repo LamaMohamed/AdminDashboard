@@ -18,6 +18,14 @@ const routes: Routes = [
 
   { path: 'login',component: LoginComponent},
   { path: '', pathMatch: 'full', redirectTo: 'home' },
+ /*  { path: 'home',component: HomeComponent},
+  { path: 'add-restaurant', component: AddRestaurantComponent, canActivate: [AuthGuard] },
+  { path: 'update-restaurant/:id', component: UpdateRestaurantComponent,canActivate: [AuthGuard,] },
+  { path: 'restaurant-list', component: RestaurantsListComponent,canActivate: [AuthGuard,] },
+  { path: 'add-hotel', component: AddHotelComponent,canActivate: [AuthGuard,] },
+  { path: 'update-hotel/:id', component: UpdateHotelComponent,canActivate: [AuthGuard,] },
+  { path: 'hotel-list', component: HotelsListComponent,canActivate: [AuthGuard,] }
+  ] */
   { path: '',component: HomeComponent, canActivate: [AuthGuard] ,
   children: [
   { path: '', pathMatch: 'full', redirectTo: '' },

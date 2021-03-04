@@ -8,7 +8,7 @@
     <mat-icon (click)="sidenav.toggle()" class="hamburger">menu</mat-icon>
   </span>
   <a class="nav-item nav-link login" *ngIf="!currentUser" routerLink="/login">Login</a>
-  <a class="nav-item nav-link login" *ngIf="currentUser" (click)="logout()"> Logout</a>
+  <a class="nav-item nav-link login" *ngIf="currentUser" (click)="logout()">Logout</a>
 </mat-toolbar>
 
 <router-outlet></router-outlet>

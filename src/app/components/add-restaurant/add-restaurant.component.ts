@@ -6,29 +6,23 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { ApiService } from './../../shared/api.service';
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { HttpEvent, HttpEventType } from '@angular/common/http';
-import { ApiRestauratCatService } from 'src/app/shared/api-restaurat-cat.service';
 
 
-export interface Address {
-  streetname: String,
-  zipcode: Number,
-  location: {
-    latitude: Number,
-    longitude: Number
-  }
+export interface Feature {
+  name: string;
 }
-export interface Contact {
-  telephone: Number,
-  Email: String,
-  website: String,
-  openhours: String,
+export interface Establishment {
+  name: string;
 }
-export interface resDescription {
-  text: string;
-  lang?: string[];
+export interface Meal {
+  name: string;
 }
-
-
+export interface Cuisine {
+  name: string;
+}
+export interface Dietary {
+  name: string;
+}
 @Component({
   selector: 'app-add-restaurant',
   templateUrl: './add-restaurant.component.html',
@@ -49,19 +43,11 @@ export class AddRestaurantComponent implements OnInit {
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   restaurantForm: FormGroup;
   imagePreview: string;
-  imageUrls: string[] = [];
-  address: Address = { streetname: null, zipcode: null, location: { latitude: null, longitude: null } };
-  contact: Contact = { telephone: null, Email: null, website: null, openhours: null };
-  descripation: resDescription = { text: null, lang: [''] };
-  Establishment: string[] = [];
-  features: string[] = [];
-  meals: string[] = [];
-  Pricerange: string;
-  cuisine: string[] = [];
-  dishes: string[] = [];
-  DietaryRestrictions: string[] = [];
-  goodFor: string[] = [];
-  RestaurantCategoryData: any = [];
+  featuresArray: Feature[] = [];
+  establishmentArray: Establishment[] = [];
+  cuisineArray: Cuisine[] = [];
+  dietaryArray: Dietary[] = [];
+  mealArray: Meal[] = [];
 
 
   ngOnInit(): void {
@@ -70,167 +56,146 @@ export class AddRestaurantComponent implements OnInit {
   constructor(public fb: FormBuilder,
     public router: Router,
     private ngZone: NgZone,
-    public restaurantApi: ApiService,
-    public RestaurantCategoryApi:ApiRestauratCatService) {
-      this.RestaurantCategoryApi.GetRestaurantCategories().subscribe(data => {
-        this.RestaurantCategoryData = data;
-        console.log(this.RestaurantCategoryData)
-      })
+    public restaurantApi: ApiService) {
   }
   /* Reactive book form */
   submitBookForm() {
     this.restaurantForm = this.fb.group({
       name: ['', [Validators.required]],
-      imageUrls: [this.imageUrls, {
+      image_path: ['', {
         Validators: [Validators.required],
-        asyncValidators: [mimeType]
+         asyncValidators: [mimeType]
       }],
-      address: [this.address,[Validators.required]],
-      contact: [this.contact,[Validators.required]],
-      descripation: [this.descripation,[Validators.required]],
-      Establishment: [this.Establishment, [Validators.required]],
-      features: [this.features, [Validators.required]],
-      meals: [this.meals, [Validators.required]],
-      Pricerange: [this.Pricerange, [Validators.required]],
-      cuisine: [this.cuisine, [Validators.required]],
-      dishes: [this.dishes, [Validators.required]],
-      DietaryRestrictions: [this.DietaryRestrictions, [Validators.required]],
-      goodFor: [this.goodFor, [Validators.required]],
-      
+      restaurant_features: [this.featuresArray],
+      establishment_type: [this.establishmentArray],
+      meals: [this.mealArray],
+      price_range: ['', [Validators.required]],
+      cuisine: [this.cuisineArray],
+      dietary_restrictions: [this.dietaryArray],
+      location: ['', [Validators.required]],
+      phone: ['', [Validators.required]],
+
     })
   }
-
-  addAddress(val, name: String) {
-    if (name == "streetname") {
-      this.address['streetname'] = val;
+  /* Add restaurant feature */
+  add(event: MatChipInputEvent): void {
+    const input = event.input;
+    const value = event.value;
+    // Add feature
+    if ((value || '').trim() && this.featuresArray.length < 10) {
+      this.featuresArray.push({ name: value.trim() })
     }
 
-    if (name == "zipcode") {
-      this.address['zipcode'] = parseFloat(val);
+    // Reset the input value
+    if (input) {
+      input.value = '';
     }
-    if (name == "location.latitude") {
-      this.address.location['latitude'] = parseFloat(val);
-    }
-    if (name == "location.longitude") {
-      this.address.location['longitude'] = parseFloat(val);
-    }
-    console.log(val);
-
-    console.log(this.address);
-
   }
-  addContact(val, name: String) {
-    if (name == "telephone") {
-      this.contact['telephone'] = parseInt(val);
+  /* Remove restaurant feature */
+  remove(feature: Feature): void {
+    const index = this.featuresArray.indexOf(feature);
+    if (index >= 0) {
+      this.featuresArray.splice(index, 1);
     }
-        
-    if (name == "Email") {  
-      this.contact['Email'] = val; 
-    }
-    if (name == "website") {
-      this.contact['website'] = val;
-    }
-    if (name == "openhours") {
-      this.contact['openhours'] = val;
-    }
-    console.log(val);
-
-    console.log(this.contact);
-
   }
-  addDescription(val, name: String) {
-    if (name == "text") {
-      this.descripation['text'] = val;
+
+  /* Add establishment type*/
+  addEstablishment(event: MatChipInputEvent): void {
+    const input = event.input;
+    const value = event.value;
+    // Add establishment
+    if ((value || '').trim() && this.establishmentArray.length < 10) {
+      this.establishmentArray.push({ name: value.trim() })
     }
 
-    console.log(val);
+    // Reset the input value
+    if (input) {
+      input.value = '';
+    }
+  }
+  /* Remove establishment type */
+  removeEstablishment(establishment: Establishment): void {
+    const index = this.establishmentArray.indexOf(establishment);
+    if (index >= 0) {
+      this.establishmentArray.splice(index, 1);
+    }
+  }
+  /* Add meals */
+  addMeals(event: MatChipInputEvent): void {
+    const input = event.input;
+    const value = event.value;
+    // Add Meals
+    if ((value || '').trim() && this.mealArray.length < 10) {
+      this.mealArray.push({ name: value.trim() })
+    }
 
-    console.log(this.descripation);
+    // Reset the input value
+    if (input) {
+      input.value = '';
+    }
+  }
+  /* Remove meals */
+  removeMeals(meal: Meal): void {
+    const index = this.mealArray.indexOf(meal);
+    if (index >= 0) {
+      this.mealArray.splice(index, 1);
+    }
+  }
+  /* Add cuisines*/
+  addCuisine(event: MatChipInputEvent): void {
+    const input = event.input;
+    const value = event.value;
+    // Add Cuisines
+    if ((value || '').trim() && this.cuisineArray.length < 10) {
+      this.cuisineArray.push({ name: value.trim() })
+    }
 
-  }
-  changeOutputEstablishment(event) {
-    console.log(event);
-    if (event.checked) {
-      this.Establishment.push(event.source.value)
-      console.log(this.Establishment);
-    } else {
-      this.Establishment = this.Establishment.filter((p) => p !== event.source.value)
-      console.log(this.Establishment);
+    // Reset the input value
+    if (input) {
+      input.value = '';
     }
   }
-  changeOutputFeatures(event) {
-    console.log(event);
-    if (event.checked) {
-      this.features.push(event.source.value)
-      console.log(this.features);
-    } else {
-      this.features = this.features.filter((p) => p !== event.source.value)
-      console.log(this.features);
+  /* Remove meals */
+  removeCuisines(cuisine: Cuisine): void {
+    const index = this.cuisineArray.indexOf(cuisine);
+    if (index >= 0) {
+      this.cuisineArray.splice(index, 1);
     }
   }
-  changeOutputMeals(event) {
-    console.log(event);
-    if (event.checked) {
-      this.meals.push(event.source.value)
-      console.log(this.meals);
-    } else {
-      this.meals = this.meals.filter((p) => p !== event.source.value)
-      console.log(this.meals);
+  /* Add restrictions*/
+  addRestriction(event: MatChipInputEvent): void {
+    const input = event.input;
+    const value = event.value;
+    // Add Restrictions
+    if ((value || '').trim() && this.dietaryArray.length < 10) {
+      this.dietaryArray.push({ name: value.trim() })
     }
-  }
-  changeOutputCuisine(event) {
-    console.log(event);
-    if (event.checked) {
-      this.cuisine.push(event.source.value)
-      console.log(this.cuisine);
-    } else {
-      this.cuisine = this.cuisine.filter((p) => p !== event.source.value)
-      console.log(this.cuisine);
-    }
-  }
-  changeOutputDishes(event) {
-    console.log(event);
-    if (event.checked) {
-      this.dishes.push(event.source.value)
-      console.log(this.dishes);
-    } else {
-      this.dishes = this.dishes.filter((p) => p !== event.source.value)
-      console.log(this.dishes);
-    }
-  }
-  changeOutputDietary(event) {
-    console.log(event);
-    if (event.checked) {
-      this.DietaryRestrictions.push(event.source.value)
-      console.log(this.DietaryRestrictions);
-    } else {
-      this.DietaryRestrictions = this.DietaryRestrictions.filter((p) => p !== event.source.value)
-      console.log(this.DietaryRestrictions);
-    }
-  }
-  changeOutputGoodFor(event) {
-    console.log(event);
-    if (event.checked) {
-      this.goodFor.push(event.source.value)
-      console.log(this.goodFor);
-    } else {
-      this.goodFor = this.goodFor.filter((p) => p !== event.source.value)
-      console.log(this.goodFor);
-    }
-  }
-  // onImagePicked(event: Event) {
-  //   const file = (event.target as HTMLInputElement).files[0];
-  //   this.restaurantForm.patchValue({ image_path: file });
-  //   this.restaurantForm.get('imageUrls').updateValueAndValidity();
-  //   // console.log(file);
-  //   // console.log(this.restaurantForm)
-  //   const reader = new FileReader();
 
-  //   reader.onload = () => {
-  //     this.imagePreview = reader.result as string;
-  //   };
-  //   reader.readAsDataURL(file);
-  // }
+    // Reset the input value
+    if (input) {
+      input.value = '';
+    }
+  }
+  /* Remove restrictions */
+  removeRestriction(dietary: Dietary): void {
+    const index = this.dietaryArray.indexOf(dietary);
+    if (index >= 0) {
+      this.dietaryArray.splice(index, 1);
+    }
+  }
+  onImagePicked(event: Event) {
+    const file = (event.target as HTMLInputElement).files[0];
+    this.restaurantForm.patchValue({ image_path: file });
+    this.restaurantForm.get('image_path').updateValueAndValidity();
+    // console.log(file);
+    // console.log(this.restaurantForm)
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      this.imagePreview = reader.result as string;
+    };
+    reader.readAsDataURL(file);
+  }
   /* Get errors */
   public handleError = (controlName: string, errorName: string) => {
     return this.restaurantForm.controls[controlName].hasError(errorName);
@@ -251,27 +216,26 @@ export class AddRestaurantComponent implements OnInit {
   //     }); 
   //   }
   // }
-  submitRestaurantForm() {
-    if (this.restaurantForm.invalid) {
-      return;
-    }
-    if (this.restaurantForm) {
-      this.restaurantApi.AddRestaurant(
-        this.restaurantForm.value.name,
-        this.restaurantForm.value.address,
-        this.restaurantForm.value.contact,
-        this.restaurantForm.value.descripation,
-        this.restaurantForm.value.features,
-        this.restaurantForm.value.Establishment,
-        this.restaurantForm.value.meals,
-        this.restaurantForm.value.Pricerange,
-        this.restaurantForm.value.cuisine,
-        this.restaurantForm.value.dishes,
-        this.restaurantForm.value.DietaryRestrictions,
-        this.restaurantForm.value.goodFor
-
-      )
-
-    }
+  submitRestaurantForm() { 
+    this.restaurantApi.AddRestaurant(
+      this.restaurantForm.value.name,
+      this.restaurantForm.value.image_path,
+      this.restaurantForm.value.restaurant_features,
+    ).subscribe((event: HttpEvent<any>) => {
+      switch (event.type) {
+        case HttpEventType.Sent:
+          console.log('Request has been made!');
+          break;
+        case HttpEventType.ResponseHeader:
+          console.log('Response header has been received!');
+          break;
+        
+        case HttpEventType.Response:
+          console.log('User successfully created!', event.body);
+          
+          this.router.navigateByUrl('/restaurant-list') 
+      } 
+    }) 
   }
+
 }

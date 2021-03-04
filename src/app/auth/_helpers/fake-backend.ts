@@ -42,7 +42,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 username: user.username,
                 firstName: user.firstName,
                 lastName: user.lastName,
-                token: 'jwt-token'
+                token: 'fake-jwt-token'
             })
         }
 
@@ -66,7 +66,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         }
 
         function isLoggedIn() {
-            return headers.get('Authorization') === 'Bearer jwt-token';
+            return headers.get('Authorization') === 'Bearer fake-jwt-token';
         }
     }
 }

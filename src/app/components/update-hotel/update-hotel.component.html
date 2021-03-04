@@ -1,6 +1,6 @@
 <!-- Title group  -->
 <div class="title-group">
-    <h1 class="mat-h1">Update Hotel</h1>
+    <h1 class="mat-h1">Add Student</h1>
     <mat-divider fxFlex="1 0"></mat-divider>
   </div>
   
@@ -46,11 +46,11 @@
           <!-- Add subjects -->
           <mat-form-field class="multiple-items">
             <mat-chip-list #chipList>
-              <!-- <mat-chip *ngFor="let subjectArray of subjectArray" [selectable]="selectable" [removable]="removable"
+              <mat-chip *ngFor="let subjectArray of subjectArray" [selectable]="selectable" [removable]="removable"
                 (removed)="remove(subjectArray)">
                 {{subjectArray.name}}
                 <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-              </mat-chip> -->
+              </mat-chip>
               <input placeholder="Add Pricedeals" [matChipInputFor]="chipList"
                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
                 (matChipInputTokenEnd)="add($event)">
@@ -62,17 +62,17 @@
   
           <!-- Date of birth -->
           <mat-form-field>
-            <input matInput readonly [matDatepicker]="picker" placeholder="Room" formControlName="rooms"
+            <input matInput readonly [matDatepicker]="picker" placeholder="Room" formControlName="room"
               (dateChange)="formatDate($event)">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
-            <mat-error *ngIf="handleError('rooms', 'required')">
+            <mat-error *ngIf="handleError('room', 'required')">
               Number of rooms
             </mat-error>
           </mat-form-field>
   
           <!-- Gender -->
-        <!--   <div class="misc-bottom-padding">
+          <div class="misc-bottom-padding">
             <mat-label>Class:</mat-label>
             <mat-radio-group aria-label="Select an option" formControlName="class">
               <mat-radio-button value="Male">1</mat-radio-button>
@@ -81,7 +81,7 @@
               <mat-radio-button value="Female">4</mat-radio-button>
               <mat-radio-button value="Female">5</mat-radio-button>
             </mat-radio-group>
-          </div> -->
+          </div>
         </div>
       </mat-card>
   

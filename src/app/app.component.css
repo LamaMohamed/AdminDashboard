@@ -8,7 +8,7 @@
  .login{
      cursor: pointer;
      color: black;
- }.login:hover{
+ }:hover{
    color:rgb(104, 104, 104)
  }
 
