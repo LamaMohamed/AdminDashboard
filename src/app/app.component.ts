@@ -1,12 +1,8 @@
-import { Component, ViewChild, HostListener, OnInit, QueryList, Input } from '@angular/core';
-import { first } from 'rxjs/operators';
+import { Component, ViewChild} from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Router } from '@angular/router';
 import { AuthenticationService } from './auth/_services/autentication.service';
-import { AdminService } from './auth/_services/admin.service';
 import { Admin} from './auth/_model/admin';
-
-
 
 @Component({
   selector: 'app-root',
@@ -24,8 +20,7 @@ export class AppComponent {
 
   constructor(
     private router: Router,
-    private authenticationService: AuthenticationService,
-    private adminService: AdminService
+    private authenticationService: AuthenticationService
 ) {
     this.authenticationService.currentUser?.subscribe(x => this.currentUser = x);
 }
